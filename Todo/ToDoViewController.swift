@@ -10,8 +10,32 @@ import UIKit
 
 class ToDoViewController: UITableViewController {
 
+    //MARK: New item Added
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Add new TODO item", message:"", preferredStyle: .alert)
+        
+        var mytextfield = UITextField()
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            print("Succes if Alert workds")
+            self.itemArray.append(mytextfield.text!)
+            self.tableView.reloadData()// Refreshes the tableview to reflect new data added to arry.
+            
+        }
+        
+        alert.addTextField { (textfield) in
+            textfield.placeholder = "Create New Item"
+            mytextfield = textfield
+            
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
     
-    let itemArray = ["item1", "item2", "item3"]
+    
+    var itemArray = ["item1", "item2", "item3"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
