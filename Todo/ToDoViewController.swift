@@ -10,6 +10,11 @@ import UIKit
 
 class ToDoViewController: UITableViewController {
 
+    // MARK: Properties
+    var itemArray = ["item1", "item2", "item3"]
+    let defaults = UserDefaults.standard
+    
+    
     //MARK: New item Added
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add new TODO item", message:"", preferredStyle: .alert)
@@ -19,6 +24,7 @@ class ToDoViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             print("Succes if Alert workds")
             self.itemArray.append(mytextfield.text!)
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
             self.tableView.reloadData()// Refreshes the tableview to reflect new data added to arry.
             
         }
@@ -35,10 +41,13 @@ class ToDoViewController: UITableViewController {
     }
     
     
-    var itemArray = ["item1", "item2", "item3"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
 
