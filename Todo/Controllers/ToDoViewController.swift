@@ -13,8 +13,8 @@ class ToDoViewController: UITableViewController {
 
     // MARK: Properties
     var itemArray = [Item]()
-    let defaults = UserDefaults.standard
-    let item = Item()
+    //let defaults = UserDefaults.standard
+    //let item = Item()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
     
@@ -34,7 +34,7 @@ class ToDoViewController: UITableViewController {
     
     //MARK: New item Added
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Add new TODO item", message:"", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add new TODO item", message:" ", preferredStyle: .alert)
        
         var mytextfield = UITextField()
         
@@ -42,43 +42,43 @@ class ToDoViewController: UITableViewController {
             print("Success! Alert Works.")
             let newItem = Item()
             newItem.title = mytextfield.text!
-            self.item.title = mytextfield.text!
+            newItem.title = mytextfield.text!
             self.itemArray.append(newItem)
          
             self.tableView.reloadData()// Refreshes the tableview to reflect new data added to arry.
-         
-     
-        
-        alert.addTextField { (textfield) in
-            textfield.placeholder = "Create New Item"
-            mytextfield = textfield
-            
         }
-        
+            alert.addTextField { (textfield) in
+                textfield.placeholder = "Create New Item"
+                mytextfield = textfield
+            
+            }
         alert.addAction(action)
         
+        
         self.present(alert, animated: true, completion: nil)
-    }
+        
+        }
+
         
         //MARK: Model Manipulation Methods
     
-    func saveItems(){
-        let encoder = PropertyListEncoder()
-        
-        do{
-            let data = try encoder.encode(self.itemArray)
-            try data.write(to: dataFilePath!)
-            
-        }catch {
-            print("Error enocidng item array.")
-        }
-        
-        }
-    }
+//    func saveItems(){
+//        let encoder = PropertyListEncoder()
+//
+//        do{
+//            let data = try encoder.encode(self.itemArray)
+//            try data.write(to: dataFilePath!)
+//
+//        }catch {
+//            print("Error enocidng item array.")
+//        }
+//
+//    }
     
-    func loadItems(){
-        
-    }
+//
+//    func loadItems(){
+//
+//    }
     
     // MARK: TableView Data Source Methods
     
@@ -123,7 +123,6 @@ class ToDoViewController: UITableViewController {
         
             tableView.deselectRow(at: indexPath, animated: true)
     }
-
-
 }
+
 
