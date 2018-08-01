@@ -18,7 +18,7 @@ class ToDoViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(dataFilePath)
+        loadItems()
     }
     
     override func didReceiveMemoryWarning() {
@@ -66,6 +66,17 @@ class ToDoViewController: UITableViewController {
         }
     }
     
+    func loadItems(){
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do{
+            itemArray = try decoder.decode([Item].self, from: data)
+            }catch{
+                print("These are the errors \(error)")
+            }
+        }
+    }
+    
 // MARK: TableView Data Source Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -87,6 +98,7 @@ class ToDoViewController: UITableViewController {
             tableView.reloadData()
             tableView.deselectRow(at: indexPath, animated: true)
     }
+
 }
 
 
