@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 
 class ToDoViewController: UITableViewController {
@@ -14,10 +15,14 @@ class ToDoViewController: UITableViewController {
 // MARK: Properties
     var itemArray = [Item]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+         let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(dataFilePath) 
         loadItems()
     }
     
@@ -33,21 +38,21 @@ class ToDoViewController: UITableViewController {
         var mytextfield = UITextField()
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            print("Success! Alert Works.")
-            let newItem = Item()
+            // What happens when user clicks the Add Item button on our UIAlert
+            let newItem = Item(context: self.context)
+            
             newItem.title = mytextfield.text!
-            newItem.title = mytextfield.text!
+            newItem.isChecked = false
             self.itemArray.append(newItem)
             self.saveItems()
-            self.tableView.reloadData()// Refreshes the tableview to reflect new data added to arry.
-        }
-            alert.addTextField { (textfield) in
-                textfield.placeholder = "Create New Item"
-                mytextfield = textfield
-            
             }
-        alert.addAction(action)
         
+        alert.addTextField { (textfield) in
+            textfield.placeholder = "Create New Item"
+            mytextfield = textfield
+            }
+        
+        alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
         
@@ -57,25 +62,38 @@ class ToDoViewController: UITableViewController {
 //MARK: Model Manipulation Methods
     
     func saveItems(){
-        let encoder = PropertyListEncoder()
         do{
-            let data = try encoder.encode(self.itemArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         }catch {
-            print("Error enocidng item array.")
+            print("If there is an Error here it is:\(error)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    
+// Gets a specific request or (no param) deafult request which returns [] of Items.
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()){
+        
+        do{
+            itemArray = try context.fetch(request)
+        }catch{
+            print("Error fetching data from Context \(error)")
+        }
+        tableView.reloadData()
+    }
+    
+// Deletes Item From Core Data
+    func removeItems(indexToRemove: Int){
+        
+        context.delete(itemArray.remove(at: indexToRemove))
+        itemArray.remove(at: indexToRemove)
+        do{
+            try context.save()
+        }catch{
+            print("There was an error deleting an item \(error)")
         }
     }
     
-    func loadItems(){
-        if let data = try? Data(contentsOf: dataFilePath!){
-            let decoder = PropertyListDecoder()
-            do{
-            itemArray = try decoder.decode([Item].self, from: data)
-            }catch{
-                print("These are the errors \(error)")
-            }
-        }
-    }
     
 // MARK: TableView Data Source Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,10 +113,39 @@ class ToDoViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             itemArray[indexPath.row].isChecked = !itemArray[indexPath.row].isChecked
             saveItems()
-            tableView.reloadData()
             tableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
+
+//MARK: SearchBar Section
+extension ToDoViewController: UISearchBarDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        print(searchBar.text!)
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request)
+    }
+    
+    
+//  Restore Todo List to Original State 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // If there are no characters in search bar show the default list.
+
+        if searchBar.text?.count == 0{
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()// No longer currently selected.
+            }
+        }
+    }
+    
+}
+
+
+
 
 
