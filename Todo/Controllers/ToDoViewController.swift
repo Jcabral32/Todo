@@ -16,6 +16,12 @@ class ToDoViewController: UITableViewController {
     var itemArray = [Item]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var selectedCategory : Category?{
+        didSet{
+            loadItems()
+        }
+    }
 
     
     
@@ -37,12 +43,13 @@ class ToDoViewController: UITableViewController {
        
         var mytextfield = UITextField()
         
+        
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             // What happens when user clicks the Add Item button on our UIAlert
             let newItem = Item(context: self.context)
-            
             newItem.title = mytextfield.text!
             newItem.isChecked = false
+            newItem.parentCategory = self.selectedCategory
             self.itemArray.append(newItem)
             self.saveItems()
             }
@@ -53,9 +60,7 @@ class ToDoViewController: UITableViewController {
             }
         
         alert.addAction(action)
-        
         self.present(alert, animated: true, completion: nil)
-        
         }
 
         
@@ -72,8 +77,16 @@ class ToDoViewController: UITableViewController {
     
     
 // Gets a specific request or (no param) deafult request which returns [] of Items.
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()){
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil){
         
+        let cateogryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additonalPredicate = predicate{
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [cateogryPredicate, additonalPredicate])
+        } else{
+            request.predicate = cateogryPredicate
+        }
+       
         do{
             itemArray = try context.fetch(request)
         }catch{
@@ -122,21 +135,18 @@ extension ToDoViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         print(searchBar.text!)
-        
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        
         loadItems(with: request)
     }
     
     
-//  Restore Todo List to Original State 
+//  Restore Todo List to Original State
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // If there are no characters in search bar show the default list.
-
         if searchBar.text?.count == 0{
             loadItems()
+            
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()// No longer currently selected.
             }

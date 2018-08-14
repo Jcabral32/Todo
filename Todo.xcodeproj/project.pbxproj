@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		86042B0A21121D8000A7C306 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86042B0821121D8000A7C306 /* DataModel.xcdatamodeld */; };
+		86B6D2FC211A04DE00DEB500 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B6D2FB211A04DE00DEB500 /* CategoryViewController.swift */; };
+		86B6D2FE211A0A0F00DEB500 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 86B6D2FD211A0A0F00DEB500 /* Default-568h@2x.png */; };
 		86BD560321062AEC002AE5BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BD560221062AEC002AE5BC /* AppDelegate.swift */; };
 		86BD560521062AEC002AE5BC /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BD560421062AEC002AE5BC /* ToDoViewController.swift */; };
 		86BD560821062AEC002AE5BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86BD560621062AEC002AE5BC /* Main.storyboard */; };
@@ -17,6 +19,8 @@
 
 /* Begin PBXFileReference section */
 		86042B0921121D8000A7C306 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		86B6D2FB211A04DE00DEB500 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		86B6D2FD211A0A0F00DEB500 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		86BD55FF21062AEC002AE5BC /* Todo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BD560221062AEC002AE5BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86BD560421062AEC002AE5BC /* ToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				86BD560421062AEC002AE5BC /* ToDoViewController.swift */,
+				86B6D2FB211A04DE00DEB500 /* CategoryViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -64,6 +69,7 @@
 		8648DEA9210798330049FA34 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				86BD560E21062AEE002AE5BC /* Info.plist */,
 				86BD560921062AEE002AE5BC /* Assets.xcassets */,
 				86BD560B21062AEE002AE5BC /* LaunchScreen.storyboard */,
 			);
@@ -73,6 +79,7 @@
 		86BD55F621062AEC002AE5BC = {
 			isa = PBXGroup;
 			children = (
+				86B6D2FD211A0A0F00DEB500 /* Default-568h@2x.png */,
 				86BD560121062AEC002AE5BC /* Todo */,
 				86BD560021062AEC002AE5BC /* Products */,
 			);
@@ -93,7 +100,6 @@
 				8648DEA7210798160049FA34 /* Controllers */,
 				8648DEA8210798250049FA34 /* Views */,
 				8648DEA9210798330049FA34 /* Supporting Files */,
-				86BD560E21062AEE002AE5BC /* Info.plist */,
 				8648DEA6210797F90049FA34 /* Data Model */,
 			);
 			path = Todo;
@@ -158,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86BD560D21062AEE002AE5BC /* LaunchScreen.storyboard in Resources */,
+				86B6D2FE211A0A0F00DEB500 /* Default-568h@2x.png in Resources */,
 				86BD560A21062AEE002AE5BC /* Assets.xcassets in Resources */,
 				86BD560821062AEC002AE5BC /* Main.storyboard in Resources */,
 			);
@@ -170,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86B6D2FC211A04DE00DEB500 /* CategoryViewController.swift in Sources */,
 				86BD560521062AEC002AE5BC /* ToDoViewController.swift in Sources */,
 				86042B0A21121D8000A7C306 /* DataModel.xcdatamodeld in Sources */,
 				86BD560321062AEC002AE5BC /* AppDelegate.swift in Sources */,
@@ -318,7 +326,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 952D9GWRWC;
-				INFOPLIST_FILE = Todo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Todo/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -336,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 952D9GWRWC;
-				INFOPLIST_FILE = Todo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Todo/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
